@@ -1,9 +1,9 @@
 using System;
 using System.Windows.Forms;
 
-namespace CSharp_Login
+namespace WinFormsApp1
 {
-    static class Program
+    internal static class Program
     {
         [STAThread]
         static void Main()
