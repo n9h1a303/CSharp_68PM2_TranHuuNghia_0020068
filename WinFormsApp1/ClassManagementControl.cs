@@ -99,6 +99,23 @@ namespace WinFormsApp1
             ClearInputs();
         }
 
+        private void btnViewStudents_Click(object sender, EventArgs e)
+        {
+            if (dgvClass.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Vui lòng chọn một lớp để xem sinh viên!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string maLop = dgvClass.SelectedRows[0].Cells["MaLop"].Value?.ToString() ?? "";
+            // Find parent form and try to display the student control filtered by class
+            var parentForm = this.FindForm() as Form1;
+            if (parentForm != null)
+            {
+                parentForm.DisplayStudentControlByClass(maLop);
+            }
+        }
+
         private void btnSearchClass_Click(object sender, EventArgs e)
         {
             string searchTerm = txtSearchClass.Text.Trim().ToLower();

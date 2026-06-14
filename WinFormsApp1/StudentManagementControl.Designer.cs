@@ -215,6 +215,56 @@ namespace WinFormsApp1
             this.btnSearchStudent.UseVisualStyleBackColor = false;
             this.btnSearchStudent.Click += new System.EventHandler(this.btnSearchStudent_Click);
 
+            // paging controls
+            this.lblPageSize = new System.Windows.Forms.Label();
+            this.nudPageSize = new System.Windows.Forms.NumericUpDown();
+            this.btnPrevPage = new System.Windows.Forms.Button();
+            this.btnNextPage = new System.Windows.Forms.Button();
+            this.lblPageInfo = new System.Windows.Forms.Label();
+
+            this.lblPageSize.AutoSize = true;
+            this.lblPageSize.Location = new System.Drawing.Point(20, 70);
+            this.lblPageSize.Name = "lblPageSize";
+            this.lblPageSize.Size = new System.Drawing.Size(70, 15);
+            this.lblPageSize.TabIndex = 4;
+            this.lblPageSize.Text = "Số / trang:";
+
+            this.nudPageSize.Location = new System.Drawing.Point(90, 68);
+            this.nudPageSize.Minimum = new decimal(new int[] {1,0,0,0});
+            this.nudPageSize.Maximum = new decimal(new int[] {100,0,0,0});
+            this.nudPageSize.Value = new decimal(new int[] {10,0,0,0});
+            this.nudPageSize.Name = "nudPageSize";
+            this.nudPageSize.Size = new System.Drawing.Size(60, 23);
+            this.nudPageSize.TabIndex = 5;
+            this.nudPageSize.ValueChanged += new System.EventHandler(this.nudPageSize_ValueChanged);
+
+            this.btnPrevPage.BackColor = System.Drawing.Color.LightGray;
+            this.btnPrevPage.Font = new System.Drawing.Font("Arial", 9);
+            this.btnPrevPage.Location = new System.Drawing.Point(480, 68);
+            this.btnPrevPage.Name = "btnPrevPage";
+            this.btnPrevPage.Size = new System.Drawing.Size(60, 23);
+            this.btnPrevPage.TabIndex = 6;
+            this.btnPrevPage.Text = "<<";
+            this.btnPrevPage.UseVisualStyleBackColor = false;
+            this.btnPrevPage.Click += new System.EventHandler(this.btnPrevPage_Click);
+
+            this.btnNextPage.BackColor = System.Drawing.Color.LightGray;
+            this.btnNextPage.Font = new System.Drawing.Font("Arial", 9);
+            this.btnNextPage.Location = new System.Drawing.Point(560, 68);
+            this.btnNextPage.Name = "btnNextPage";
+            this.btnNextPage.Size = new System.Drawing.Size(60, 23);
+            this.btnNextPage.TabIndex = 7;
+            this.btnNextPage.Text = ">>";
+            this.btnNextPage.UseVisualStyleBackColor = false;
+            this.btnNextPage.Click += new System.EventHandler(this.btnNextPage_Click);
+
+            this.lblPageInfo.AutoSize = true;
+            this.lblPageInfo.Location = new System.Drawing.Point(630, 72);
+            this.lblPageInfo.Name = "lblPageInfo";
+            this.lblPageInfo.Size = new System.Drawing.Size(80, 15);
+            this.lblPageInfo.TabIndex = 8;
+            this.lblPageInfo.Text = "Trang 0 / 0";
+
             this.dgvStudent.AllowUserToAddRows = false;
             this.dgvStudent.AllowUserToDeleteRows = false;
             this.dgvStudent.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
@@ -263,5 +313,10 @@ namespace WinFormsApp1
         private System.Windows.Forms.Label lblSearchStudent;
         private System.Windows.Forms.TextBox txtSearchStudent;
         private System.Windows.Forms.DataGridView dgvStudent;
+        private System.Windows.Forms.Label lblPageSize;
+        private System.Windows.Forms.NumericUpDown nudPageSize;
+        private System.Windows.Forms.Button btnPrevPage;
+        private System.Windows.Forms.Button btnNextPage;
+        private System.Windows.Forms.Label lblPageInfo;
     }
 }

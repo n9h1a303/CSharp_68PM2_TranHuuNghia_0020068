@@ -90,6 +90,16 @@ namespace WinFormsApp1
             pnlContent.Controls.Add(studentControl);
         }
 
+        public void DisplayStudentControlByClass(string maLop)
+        {
+            pnlContent.Controls.Clear();
+            studentControl.LoadStudentData();
+            // filter students by class
+            studentControl.FilterByClass(maLop);
+            studentControl.Dock = DockStyle.Fill;
+            pnlContent.Controls.Add(studentControl);
+        }
+
         private void DisplayClassControl()
         {
             pnlContent.Controls.Clear();

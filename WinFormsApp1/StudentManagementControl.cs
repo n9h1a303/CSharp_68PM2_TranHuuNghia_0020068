@@ -8,6 +8,10 @@ namespace WinFormsApp1
     public partial class StudentManagementControl : UserControl
     {
         private List<SinhVien> studentDataSource;
+        private List<SinhVien> filteredData;
+        private int currentPage = 1;
+        private int pageSize = 10;
+        private int totalPages = 1;
 
         public StudentManagementControl()
         {
@@ -18,13 +22,40 @@ namespace WinFormsApp1
         public void LoadStudentData()
         {
             LoadClassComboBox();
-            RefreshDataGridView();
+            ResetPaging();
+            ApplyPaging();
+        }
+
+        private void ResetPaging()
+        {
+            filteredData = studentDataSource.ToList();
+            currentPage = 1;
+            pageSize = (int)nudPageSize.Value;
+            totalPages = Math.Max(1, (int)Math.Ceiling((double)filteredData.Count / pageSize));
+            UpdatePageInfo();
+        }
+
+        private void UpdatePageInfo()
+        {
+            lblPageInfo.Text = $"Trang {currentPage} / {totalPages}";
+        }
+
+        private void ApplyPaging()
+        {
+            pageSize = (int)nudPageSize.Value;
+            totalPages = Math.Max(1, (int)Math.Ceiling((double)filteredData.Count / pageSize));
+            if (currentPage > totalPages) currentPage = totalPages;
+            var pageData = filteredData.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+            dgvStudent.DataSource = null;
+            dgvStudent.DataSource = pageData;
+            UpdatePageInfo();
         }
 
         private void RefreshDataGridView()
         {
-            dgvStudent.DataSource = null;
-            dgvStudent.DataSource = studentDataSource.ToList();
+            // Keep filteredData in sync and apply paging so the grid always shows the current page
+            filteredData = studentDataSource.ToList();
+            ApplyPaging();
         }
 
         private void LoadClassComboBox()
@@ -51,7 +82,8 @@ namespace WinFormsApp1
 
                 DatabaseMock.DanhSachSV.Add(newStudent);
                 MessageBox.Show("Thêm sinh viên thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                RefreshDataGridView();
+                // refresh with paging
+                LoadStudentData();
                 ClearInputs();
             }
         }
@@ -76,7 +108,8 @@ namespace WinFormsApp1
                     studentToEdit.GioiTinh = cmbGender.Text;
                     studentToEdit.MaLop = cmbClass.SelectedValue?.ToString() ?? "";
                     MessageBox.Show("Sửa sinh viên thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    RefreshDataGridView();
+                    // refresh with paging
+                    LoadStudentData();
                     ClearInputs();
                 }
             }
@@ -100,7 +133,8 @@ namespace WinFormsApp1
                 {
                     DatabaseMock.DanhSachSV.Remove(studentToDelete);
                     MessageBox.Show("Xóa sinh viên thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    RefreshDataGridView();
+                    // refresh with paging
+                    LoadStudentData();
                     ClearInputs();
                 }
             }
@@ -113,21 +147,55 @@ namespace WinFormsApp1
 
         private void btnSearchStudent_Click(object sender, EventArgs e)
         {
-            string searchTerm = txtSearchStudent.Text.Trim().ToLower();
+            PerformSearch(txtSearchStudent.Text.Trim());
+        }
 
+        public void PerformSearch(string term)
+        {
+            string searchTerm = term?.ToLower() ?? string.Empty;
             if (string.IsNullOrEmpty(searchTerm))
             {
-                RefreshDataGridView();
+                filteredData = studentDataSource.ToList();
             }
             else
             {
-                var results = studentDataSource.Where(s =>
-                    s.MaSV.ToLower().Contains(searchTerm) ||
-                    s.HoTen.ToLower().Contains(searchTerm) ||
-                    s.MaLop.ToLower().Contains(searchTerm)).ToList();
+                filteredData = studentDataSource.Where(s =>
+                    (s.MaSV ?? string.Empty).ToLower().Contains(searchTerm) ||
+                    (s.HoTen ?? string.Empty).ToLower().Contains(searchTerm) ||
+                    (s.MaLop ?? string.Empty).ToLower().Contains(searchTerm)).ToList();
+            }
 
-                dgvStudent.DataSource = null;
-                dgvStudent.DataSource = results;
+            currentPage = 1;
+            ApplyPaging();
+        }
+
+        public void FilterByClass(string maLop)
+        {
+            PerformSearch(maLop ?? string.Empty);
+        }
+
+        private void nudPageSize_ValueChanged(object sender, EventArgs e)
+        {
+            pageSize = (int)nudPageSize.Value;
+            currentPage = 1;
+            ApplyPaging();
+        }
+
+        private void btnPrevPage_Click(object sender, EventArgs e)
+        {
+            if (currentPage > 1)
+            {
+                currentPage--;
+                ApplyPaging();
+            }
+        }
+
+        private void btnNextPage_Click(object sender, EventArgs e)
+        {
+            if (currentPage < totalPages)
+            {
+                currentPage++;
+                ApplyPaging();
             }
         }
 

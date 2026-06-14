@@ -145,6 +145,18 @@ namespace WinFormsApp1
             this.btnClearClass.UseVisualStyleBackColor = false;
             this.btnClearClass.Click += new System.EventHandler(this.btnClearClass_Click);
 
+            this.btnViewStudents = new System.Windows.Forms.Button();
+            this.btnViewStudents.BackColor = System.Drawing.Color.SteelBlue;
+            this.btnViewStudents.Font = new System.Drawing.Font("Arial", 9);
+            this.btnViewStudents.ForeColor = System.Drawing.Color.White;
+            this.btnViewStudents.Location = new System.Drawing.Point(20, 380);
+            this.btnViewStudents.Name = "btnViewStudents";
+            this.btnViewStudents.Size = new System.Drawing.Size(300, 30);
+            this.btnViewStudents.TabIndex = 11;
+            this.btnViewStudents.Text = "Xem sinh viên của lớp";
+            this.btnViewStudents.UseVisualStyleBackColor = false;
+            this.btnViewStudents.Click += new System.EventHandler(this.btnViewStudents_Click);
+
             // pnlRightClass
             this.pnlRightClass.Controls.Add(this.lblSearchClass);
             this.pnlRightClass.Controls.Add(this.txtSearchClass);
@@ -220,6 +232,7 @@ namespace WinFormsApp1
         private System.Windows.Forms.Button btnDeleteClass;
         private System.Windows.Forms.Button btnClearClass;
         private System.Windows.Forms.Button btnSearchClass;
+        private System.Windows.Forms.Button btnViewStudents;
         private System.Windows.Forms.Panel pnlRightClass;
         private System.Windows.Forms.Label lblSearchClass;
         private System.Windows.Forms.TextBox txtSearchClass;
